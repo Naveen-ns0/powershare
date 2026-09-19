@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://naveen-ns0.github.io/powershare-calculator/sitemap.xml

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerShare — Free RollerCoin Reward Calculator</title>
+<meta name="description" content="Free RollerCoin reward calculator — estimate mining payouts per block, hour, day and month from your power and league power. No sign-up, independent fan tool.">
+<link rel="canonical" href="https://naveen-ns0.github.io/powershare-calculator/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="PowerShare — Free RollerCoin Reward Calculator">
+<meta property="og:description" content="Estimate your RollerCoin mining reward from your power, league power, and block reward. Free, no sign-up, nothing stored.">
+<meta property="og:url" content="https://naveen-ns0.github.io/powershare-calculator/">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PowerShare — Free RollerCoin Reward Calculator">
+<meta name="twitter:description" content="Estimate your RollerCoin mining reward from your power, league power, and block reward. Free, no sign-up.">
+
+<meta name="keywords" content="rollercoin calculator, rollercoin reward calculator, rollercoin mining calculator, rollercoin payout calculator, rollercoin power calculator, rollercoin league power, rollercoin block reward, rollercoin mining estimator, how to calculate rollercoin reward, rollercoin power needed calculator, what is league power rollercoin, best rollercoin calculator">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this an official RollerCoin tool?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — PowerShare is an independent, fan-made calculator and isn't affiliated with or endorsed by RollerCoin." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this pull live data from RollerCoin?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. You enter your own numbers from the game, and the calculator estimates your reward from them. Nothing is fetched automatically, and nothing you enter is stored." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why isn't my estimate matching what I actually earned?",
+      "acceptedAnswer": { "@type": "Answer", "text": "League power changes constantly as other players join, leave, or reallocate power — so a reward calculated a few minutes ago can already be out of date. Treat this as an estimate for planning, not a guarantee." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you store the numbers I enter?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Nothing is saved — the moment you close or refresh the page, your inputs are gone." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does adding power always increase my reward?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Almost always, but by less than you might expect — because adding power increases both your share's numerator and the league's total power (the denominator) at the same time. The What If I Add Power tab calculates this correctly and shows the real gain." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this for any coin — BTC, LTC, DOGE, ETH, SOL, POL?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The calculator doesn't care which coin you're mining — just enter that coin's league power and current block reward, and label it however you like." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find my league power in RollerCoin?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Open the mining screen for the coin you want to check inside RollerCoin — your power and the league's total power for that coin are both shown there." }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate is the estimate?",
+      "acceptedAnswer": { "@type": "Answer", "text": "As accurate as the numbers you enter, at the moment you enter them. Since league power shifts as other players join or reallocate, treat the result as a snapshot estimate rather than a guaranteed payout." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is PowerShare Calculator free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — free, with no account, no sign-up, and no limit on how many times you can use it." }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the best RollerCoin calculator to use?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Any RollerCoin calculator is only as good as the numbers you give it. PowerShare uses the same power-share formula RollerCoin itself describes, runs the math transparently, and adds a What If I Add Power comparison so you can see the real effect of buying more power before you spend anything." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a free RollerCoin calculator online?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — PowerShare Calculator is completely free, works in any browser, and doesn't require creating an account or linking your RollerCoin profile." }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "PowerShare Calculator",
+  "url": "https://naveen-ns0.github.io/powershare-calculator/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (runs in browser)",
+  "description": "Free RollerCoin reward calculator that estimates mining payouts per block, hour, day and month from your power, league power, and block reward. Independent, fan-made, not affiliated with RollerCoin.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isAccessibleForFree": true
+}
+</script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand"><span class="bolt">⚡</span> PowerShare <span class="tag">rollercoin reward calculator</span></div>
+    <nav class="top-links">no sign-up · nothing stored</nav>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">// rollercoin mining power → estimated reward</div>
+    <h1>How much does your <span>RollerCoin power</span> actually earn?</h1>
+    <p class="sub">Enter your power, your league's total power, and the block reward — get an estimate per block, hour, day, and month. Independent, fan-made, not affiliated with RollerCoin.</p>
+
+    <div class="dash">
+      <div class="dash-bar">
+        <span class="led" id="led"></span>
+        <span id="statusText">ready</span>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="reward">Reward Calculator</button>
+        <button class="tab-btn" data-tab="whatif">What If I Add Power</button>
+      </div>
+
+      <div class="dash-body">
+        <div class="tab-panel active" id="tab-reward">
+
+        <div class="gauge-block">
+          <div class="gauge-labels">
+            <span class="my">Your power</span>
+            <span class="league">League power</span>
+          </div>
+          <div class="gauge-track">
+            <div class="gauge-fill" id="gaugeFill"></div>
+          </div>
+          <div class="gauge-pct" id="gaugePct">Enter both values to see your share</div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="myPower">Your power</label>
+            <div class="input-combo">
+              <input type="number" id="myPower" placeholder="e.g. 500" min="0" step="any">
+              <select id="myUnit">
+                <option value="gh">Gh/s</option>
+                <option value="th" selected>Th/s</option>
+                <option value="ph">Ph/s</option>
+                <option value="eh">Eh/s</option>
+                <option value="zh">Zh/s</option>
+                <option value="yh">Yh/s</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="leaguePower">League power (this coin)</label>
+            <div class="input-combo">
+              <input type="number" id="leaguePower" placeholder="e.g. 5.4" min="0" step="any">
+              <select id="leagueUnit">
+                <option value="gh">Gh/s</option>
+                <option value="th">Th/s</option>
+                <option value="ph">Ph/s</option>
+                <option value="eh">Eh/s</option>
+                <option value="zh" selected>Zh/s</option>
+                <option value="yh">Yh/s</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="blockReward">Block reward</label>
+            <input type="number" id="blockReward" placeholder="e.g. 30" min="0" step="any">
+          </div>
+
+          <div class="field">
+            <label for="coinLabel">Coin</label>
+            <select id="coinLabel">
+              <option value="">— none —</option>
+              <option value="BTC">BTC</option>
+              <option value="LTC">LTC</option>
+              <option value="DOGE">DOGE</option>
+              <option value="ETH">ETH</option>
+              <option value="BCH">BCH</option>
+              <option value="DASH">DASH</option>
+              <option value="ZEC">ZEC</option>
+              <option value="XMR">XMR</option>
+              <option value="SOL">SOL</option>
+              <option value="POL">POL</option>
+              <option value="RLT">RLT</option>
+              <option value="__other__">Other…</option>
+            </select>
+          </div>
+          <div class="field" id="coinOtherWrap" style="display:none;">
+            <label for="coinOther">Coin name</label>
+            <input type="text" id="coinOther" placeholder="e.g. XLM">
+          </div>
+
+          <div class="field">
+            <label for="blockTimePreset">Block time</label>
+            <select id="blockTimePreset">
+              <option value="10" selected>10 min (default)</option>
+              <option value="8">8 min</option>
+              <option value="12">12 min</option>
+              <option value="15">15 min</option>
+              <option value="__custom__">Custom…</option>
+            </select>
+          </div>
+          <div class="field" id="blockTimeCustomWrap" style="display:none;">
+            <label>Custom block time</label>
+            <div class="time-combo">
+              <input type="number" id="blockTimeCustomMin" placeholder="min" min="0" step="1">
+              <input type="number" id="blockTimeCustomSec" placeholder="sec" min="0" max="59" step="1">
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" id="calcBtn">Calculate reward</button>
+          <button class="btn-ghost" id="clearBtn">Clear</button>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+        <div class="loading-note" id="loadingNote">Calculating…</div>
+
+        <div class="results" id="results">
+          <div class="result-cell"><div class="k">Per block</div><div class="v" id="resBlock">—</div></div>
+          <div class="result-cell"><div class="k">Per hour</div><div class="v" id="resHour">—</div></div>
+          <div class="result-cell"><div class="k">Per day</div><div class="v" id="resDay">—</div></div>
+          <div class="result-cell"><div class="k">Per month</div><div class="v" id="resMonth">—</div></div>
+        </div>
+
+        </div><!-- /tab-reward -->
+
+        <div class="tab-panel" id="tab-whatif">
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="wiMyPower">Your current power</label>
+              <div class="input-combo">
+                <input type="number" id="wiMyPower" placeholder="e.g. 9" min="0" step="any">
+                <select id="wiMyUnit">
+                  <option value="gh">Gh/s</option>
+                  <option value="th">Th/s</option>
+                  <option value="ph">Ph/s</option>
+                  <option value="eh" selected>Eh/s</option>
+                  <option value="zh">Zh/s</option>
+                  <option value="yh">Yh/s</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="wiLeaguePower">Current league power (this coin)</label>
+              <div class="input-combo">
+                <input type="number" id="wiLeaguePower" placeholder="e.g. 9.400" min="0" step="any">
+                <select id="wiLeagueUnit">
+                  <option value="gh">Gh/s</option>
+                  <option value="th">Th/s</option>
+                  <option value="ph">Ph/s</option>
+                  <option value="eh">Eh/s</option>
+                  <option value="zh" selected>Zh/s</option>
+                  <option value="yh">Yh/s</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="wiAddPower">Power you're adding</label>
+              <div class="input-combo">
+                <input type="number" id="wiAddPower" placeholder="e.g. 7" min="0" step="any">
+                <select id="wiAddUnit">
+                  <option value="gh">Gh/s</option>
+                  <option value="th">Th/s</option>
+                  <option value="ph">Ph/s</option>
+                  <option value="eh" selected>Eh/s</option>
+                  <option value="zh">Zh/s</option>
+                  <option value="yh">Yh/s</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="wiBlockReward">Block reward</label>
+              <input type="number" id="wiBlockReward" placeholder="e.g. 29.323" min="0" step="any">
+            </div>
+
+            <div class="field">
+              <label for="wiCoinLabel">Coin</label>
+              <select id="wiCoinLabel">
+                <option value="">— none —</option>
+                <option value="BTC">BTC</option>
+                <option value="LTC">LTC</option>
+                <option value="DOGE" selected>DOGE</option>
+                <option value="ETH">ETH</option>
+                <option value="BCH">BCH</option>
+                <option value="DASH">DASH</option>
+                <option value="ZEC">ZEC</option>
+                <option value="XMR">XMR</option>
+                <option value="SOL">SOL</option>
+                <option value="POL">POL</option>
+                <option value="RLT">RLT</option>
+                <option value="__other__">Other…</option>
+              </select>
+            </div>
+            <div class="field" id="wiCoinOtherWrap" style="display:none;">
+              <label for="wiCoinOther">Coin name</label>
+              <input type="text" id="wiCoinOther" placeholder="e.g. XLM">
+            </div>
+
+            <div class="field">
+              <label for="wiBlockTimePreset">Block time</label>
+              <select id="wiBlockTimePreset">
+                <option value="10" selected>10 min (default)</option>
+                <option value="8">8 min</option>
+                <option value="12">12 min</option>
+                <option value="15">15 min</option>
+                <option value="__custom__">Custom…</option>
+              </select>
+            </div>
+            <div class="field" id="wiBlockTimeCustomWrap" style="display:none;">
+              <label>Custom block time</label>
+              <div class="time-combo">
+                <input type="number" id="wiBlockTimeCustomMin" placeholder="min" min="0" step="1">
+                <input type="number" id="wiBlockTimeCustomSec" placeholder="sec" min="0" max="59" step="1">
+              </div>
+            </div>
+          </div>
+
+          <p style="font-size:12.5px; color:var(--text-dim); margin: -6px 0 18px;">
+            Adding power to a league increases both your power <em>and</em> the total league power by the same amount — this tool accounts for that automatically.
+          </p>
+
+          <div class="actions">
+            <button class="btn-primary" id="wiCalcBtn">Compare before / after</button>
+            <button class="btn-ghost" id="wiClearBtn">Clear</button>
+          </div>
+
+          <div class="error-msg" id="wiErrorMsg"></div>
+          <div class="loading-note" id="wiLoadingNote">Calculating…</div>
+
+          <div class="compare-table" id="compareTable">
+            <div class="compare-row">
+              <div class="compare-cell"></div>
+              <div class="compare-cell">Current</div>
+              <div class="compare-cell">After adding power</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-cell label">Your share</div>
+              <div class="compare-cell current" id="cmpShareBefore">—</div>
+              <div class="compare-cell after" id="cmpShareAfter">—</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-cell label">Per day</div>
+              <div class="compare-cell current" id="cmpDayBefore">—</div>
+              <div class="compare-cell after" id="cmpDayAfter">—</div>
+            </div>
+            <div class="compare-row">
+              <div class="compare-cell label">Per month</div>
+              <div class="compare-cell current" id="cmpMonthBefore">—</div>
+              <div class="compare-cell after" id="cmpMonthAfter">—</div>
+            </div>
+            <div class="compare-row gain">
+              <div class="compare-cell label">Gain</div>
+              <div class="compare-cell" id="cmpGainDay">—</div>
+              <div class="compare-cell" id="cmpGainPct">—</div>
+            </div>
+          </div>
+
+        </div><!-- /tab-whatif -->
+
+      </div>
+    </div>
+  </section>
+
+  <div class="ad-slot">ad space</div>
+
+  <section class="section">
+    <h2>How this works</h2>
+    <p>RollerCoin splits each coin's block reward among every player mining that coin, in proportion to power. Your share is <code>your power ÷ league power</code>, and your estimated reward is that share multiplied by the block reward.</p>
+    <p>A new block is generated roughly every 10 minutes by default, though this can shift slightly depending on activity — adjust the block-time field above if you've noticed a different pace in-game.</p>
+    <p>You'll find your power, your league's total power for a coin, and the current block reward directly inside RollerCoin's mining screen for that coin.</p>
+
+    <h3 style="font-family: var(--display); font-size: 16px; color: #fff; margin: 22px 0 10px;">Worked example</h3>
+    <p>Say your power is <code>8.596 Eh/s</code>, your league's total power for DOGE is <code>9.400 Zh/s</code>, and the block reward is <code>29.323 DOGE</code> every 10 minutes.</p>
+    <p>Converted to the same unit, your share is <code>8.596 × 10¹⁸ ÷ 9.400 × 10²¹ ≈ 0.0914%</code> of the league. Multiplied by the block reward, that's roughly <code>0.0268 DOGE</code> per block — about <code>3.861 DOGE</code> per day, and <code>≈115.84 DOGE</code> per month at that same rate.</p>
+  </section>
+
+  <div class="ad-slot">ad space</div>
+
+  <section class="section">
+    <h2>Glossary</h2>
+    <p>Quick definitions if any of the terms above aren't familiar yet.</p>
+
+    <div class="faq-item">
+      <p class="faq-q">Power</p>
+      <p class="faq-a">Your mining power for a specific coin, shown in your RollerCoin mining screen — measured in hashes per second (h/s), usually written with a prefix like Gh/s, Th/s, Ph/s, Eh/s, or Zh/s depending on scale.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">League power</p>
+      <p class="faq-a">The combined power of every player mining that same coin in your league — including your own power. It's the denominator in the share calculation.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Block reward</p>
+      <p class="faq-a">The total amount of a coin paid out and split among all miners each time a new block is generated, roughly every 10 minutes by default.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Share</p>
+      <p class="faq-a">Your power divided by league power — the fraction of each block reward you're estimated to receive.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Gh/s, Th/s, Ph/s, Eh/s, Zh/s, Yh/s</p>
+      <p class="faq-a">Units of hashing power, each 1,000× the one before it: Giga-, Tera-, Peta-, Exa-, Zetta-, and Yotta-hashes per second. As RollerCoin's total network power grows, larger units become more common in league totals.</p>
+    </div>
+  </section>
+
+  <div class="ad-slot">ad space</div>
+
+  <section class="section">
+    <h2>Frequently asked questions</h2>
+
+    <div class="faq-item">
+      <p class="faq-q">Is this an official RollerCoin tool?</p>
+      <p class="faq-a">No — PowerShare is an independent, fan-made calculator and isn't affiliated with or endorsed by RollerCoin.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Does this pull live data from RollerCoin?</p>
+      <p class="faq-a">No. You enter your own numbers from the game, and the calculator estimates your reward from them. Nothing is fetched automatically, and nothing you enter is stored.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Why isn't my estimate matching what I actually earned?</p>
+      <p class="faq-a">League power changes constantly as other players join, leave, or reallocate power — so a reward calculated a few minutes ago can already be out of date. Treat this as an estimate for planning, not a guarantee.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Do you store the numbers I enter?</p>
+      <p class="faq-a">No. Nothing is saved — the moment you close or refresh the page, your inputs are gone.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Does adding power always increase my reward?</p>
+      <p class="faq-a">Almost always, but by less than you might expect — because adding power increases both your share's numerator and the league's total power (the denominator) at the same time. The What If I Add Power tab calculates this correctly and shows the real gain.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Can I use this for any coin — BTC, LTC, DOGE, ETH, SOL, POL?</p>
+      <p class="faq-a">Yes. The calculator doesn't care which coin you're mining — just enter that coin's league power and current block reward, and label it however you like.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">How do I find my league power in RollerCoin?</p>
+      <p class="faq-a">Open the mining screen for the coin you want to check inside RollerCoin — your power and the league's total power for that coin are both shown there.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">How accurate is the estimate?</p>
+      <p class="faq-a">As accurate as the numbers you enter, at the moment you enter them. Since league power shifts as other players join or reallocate, treat the result as a snapshot estimate rather than a guaranteed payout.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Is PowerShare Calculator free?</p>
+      <p class="faq-a">Yes — free, with no account, no sign-up, and no limit on how many times you can use it.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">What's the best RollerCoin calculator to use?</p>
+      <p class="faq-a">Any RollerCoin calculator is only as good as the numbers you give it. PowerShare uses the same power-share formula RollerCoin itself describes, runs the math transparently, and adds a What If I Add Power comparison so you can see the real effect of buying more power before you spend anything.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Is there a free RollerCoin calculator online?</p>
+      <p class="faq-a">Yes — PowerShare Calculator is completely free, works in any browser, and doesn't require creating an account or linking your RollerCoin profile.</p>
+    </div>
+  </section>
+
+  <p class="disclaimer">PowerShare Calculator is an independent, fan-made tool and is not affiliated with, endorsed by, or connected to RollerCoin in any way. Estimates are for planning purposes only — actual in-game rewards depend on real-time league power and RollerCoin's own reward parameters, which can change at any time.</p>
+
+  <footer class="site-footer">
+    <span>PowerShare Calculator — a small, free tool.</span>
+    <span>Built for players who just want to know if the power is worth it.</span>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
