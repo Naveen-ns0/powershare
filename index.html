@@ -16,11 +16,12 @@
 <meta name="twitter:title" content="PowerShare — Free RollerCoin Reward Calculator">
 <meta name="twitter:description" content="Estimate your RollerCoin mining reward from your power, league power, and block reward. Free, no sign-up.">
 
+  
+<meta name="google-site-verification" content="I2Nv5lFsmDEwxhFY4duI14UjG2b7LB9jltkYpDiGv80" />
+
+  
 <meta name="keywords" content="rollercoin calculator, rollercoin reward calculator, rollercoin mining calculator, rollercoin payout calculator, rollercoin power calculator, rollercoin league power, rollercoin block reward, rollercoin mining estimator, how to calculate rollercoin reward, rollercoin power needed calculator, what is league power rollercoin, best rollercoin calculator">
 
-<!--Google Search Console Verification code-->
-<meta name="google-site-verification" content="I2Nv5lFsmDEwxhFY4duI14UjG2b7LB9jltkYpDiGv80" />
-  
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -188,7 +189,7 @@
               <option value="LTC">LTC</option>
               <option value="DOGE">DOGE</option>
               <option value="ETH">ETH</option>
-              <option value="BNB">BNB</option>
+              <option value="BCH">BCH</option>
               <option value="DASH">DASH</option>
               <option value="ZEC">ZEC</option>
               <option value="XMR">XMR</option>
@@ -235,6 +236,29 @@
           <div class="result-cell"><div class="k">Per hour</div><div class="v" id="resHour">—</div></div>
           <div class="result-cell"><div class="k">Per day</div><div class="v" id="resDay">—</div></div>
           <div class="result-cell"><div class="k">Per month</div><div class="v" id="resMonth">—</div></div>
+        </div>
+
+        <div class="log-block" id="rewardLogBlock" style="display:none;">
+          <div class="log-head">
+            <span class="log-title">This session's calculations</span>
+            <button class="btn-ghost btn-small" id="clearRewardLog">Clear log</button>
+          </div>
+          <div class="log-table-wrap">
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Coin</th>
+                  <th>Your power</th>
+                  <th>League power</th>
+                  <th>Per block</th>
+                  <th>Per day</th>
+                  <th>Per month</th>
+                </tr>
+              </thead>
+              <tbody id="rewardLogBody"></tbody>
+            </table>
+          </div>
         </div>
 
         </div><!-- /tab-reward -->
@@ -371,6 +395,28 @@
               <div class="compare-cell label">Gain</div>
               <div class="compare-cell" id="cmpGainDay">—</div>
               <div class="compare-cell" id="cmpGainPct">—</div>
+            </div>
+          </div>
+
+          <div class="log-block" id="whatifLogBlock" style="display:none;">
+            <div class="log-head">
+              <span class="log-title">This session's comparisons</span>
+              <button class="btn-ghost btn-small" id="clearWhatifLog">Clear log</button>
+            </div>
+            <div class="log-table-wrap">
+              <table class="log-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Coin</th>
+                    <th>Power (before → after)</th>
+                    <th>League (before → after)</th>
+                    <th>Per day (before → after)</th>
+                    <th>Gain/day</th>
+                  </tr>
+                </thead>
+                <tbody id="whatifLogBody"></tbody>
+              </table>
             </div>
           </div>
 
