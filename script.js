@@ -1,5 +1,32 @@
-
   const WORKER_URL = "https://powershare-calculator.naveenkumarsingh112211.workers.dev/";
+
+  const LOG_CAP = 20;
+
+  function loadLog(key) {
+    try {
+      const raw = sessionStorage.getItem(key);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  }
+
+  function saveLog(key, entries) {
+    try { sessionStorage.setItem(key, JSON.stringify(entries)); } catch {}
+  }
+
+  function nextSerial(counterKey) {
+    let n = parseInt(sessionStorage.getItem(counterKey) || '0', 10) + 1;
+    try { sessionStorage.setItem(counterKey, String(n)); } catch {}
+    return n;
+  }
+
+  function addLogEntry(logKey, counterKey, entry) {
+    const entries = loadLog(logKey);
+    entry.serial = nextSerial(counterKey);
+    entries.push(entry);
+    while (entries.length > LOG_CAP) entries.shift();
+    saveLog(logKey, entries);
+    return entries;
+  }
 
   const myPowerEl = document.getElementById('myPower');
   const myUnitEl = document.getElementById('myUnit');
@@ -45,6 +72,9 @@
   const results = document.getElementById('results');
   const statusText = document.getElementById('statusText');
   const led = document.getElementById('led');
+  const rewardLogBlock = document.getElementById('rewardLogBlock');
+  const rewardLogBody = document.getElementById('rewardLogBody');
+  const clearRewardLogBtn = document.getElementById('clearRewardLog');
 
   const unitMultiplier = { gh: 1e9, th: 1e12, ph: 1e15, eh: 1e18, zh: 1e21, yh: 1e24 };
 
@@ -73,6 +103,36 @@
     if (n < 0.00001) return n.toExponential(3);
     return n.toLocaleString(undefined, { maximumFractionDigits: 8 });
   }
+
+  const REWARD_LOG_KEY = 'powershare_reward_log';
+  const REWARD_COUNTER_KEY = 'powershare_reward_counter';
+
+  function renderRewardLog() {
+    const entries = loadLog(REWARD_LOG_KEY);
+    if (entries.length === 0) {
+      rewardLogBlock.style.display = 'none';
+      return;
+    }
+    rewardLogBlock.style.display = 'block';
+    rewardLogBody.innerHTML = entries.map(e => `
+      <tr>
+        <td>${e.serial}</td>
+        <td>${e.coin || '—'}</td>
+        <td>${e.myPowerDisplay}</td>
+        <td>${e.leaguePowerDisplay}</td>
+        <td>${e.perBlock}</td>
+        <td>${e.perDay}</td>
+        <td>${e.perMonth}</td>
+      </tr>
+    `).join('');
+  }
+
+  clearRewardLogBtn.addEventListener('click', () => {
+    saveLog(REWARD_LOG_KEY, []);
+    renderRewardLog();
+  });
+
+  renderRewardLog(); // restore any log from this browser session on page load
 
   async function callWorker(payload) {
     const res = await fetch(WORKER_URL, {
@@ -127,6 +187,16 @@
 
       results.style.display = 'grid';
       statusText.textContent = 'done';
+
+      addLogEntry(REWARD_LOG_KEY, REWARD_COUNTER_KEY, {
+        coin: coin,
+        myPowerDisplay: `${myPowerEl.value} ${myUnitEl.options[myUnitEl.selectedIndex].text}`,
+        leaguePowerDisplay: `${leaguePowerEl.value} ${leagueUnitEl.options[leagueUnitEl.selectedIndex].text}`,
+        perBlock: fmt(data.perBlock) + suffix,
+        perDay: fmt(data.perDay) + suffix,
+        perMonth: fmt(data.perMonth) + suffix
+      });
+      renderRewardLog();
     } catch (err) {
       console.error(err);
       errorMsg.textContent = 'Could not reach the calculator right now. Please try again shortly.';
@@ -213,6 +283,38 @@
   const wiErrorMsg = document.getElementById('wiErrorMsg');
   const wiLoadingNote = document.getElementById('wiLoadingNote');
   const compareTable = document.getElementById('compareTable');
+  const whatifLogBlock = document.getElementById('whatifLogBlock');
+  const whatifLogBody = document.getElementById('whatifLogBody');
+  const clearWhatifLogBtn = document.getElementById('clearWhatifLog');
+
+  const WHATIF_LOG_KEY = 'powershare_whatif_log';
+  const WHATIF_COUNTER_KEY = 'powershare_whatif_counter';
+
+  function renderWhatifLog() {
+    const entries = loadLog(WHATIF_LOG_KEY);
+    if (entries.length === 0) {
+      whatifLogBlock.style.display = 'none';
+      return;
+    }
+    whatifLogBlock.style.display = 'block';
+    whatifLogBody.innerHTML = entries.map(e => `
+      <tr>
+        <td>${e.serial}</td>
+        <td>${e.coin || '—'}</td>
+        <td>${e.powerRange}</td>
+        <td>${e.leagueRange}</td>
+        <td>${e.perDayRange}</td>
+        <td>${e.gainDay}</td>
+      </tr>
+    `).join('');
+  }
+
+  clearWhatifLogBtn.addEventListener('click', () => {
+    saveLog(WHATIF_LOG_KEY, []);
+    renderWhatifLog();
+  });
+
+  renderWhatifLog(); // restore any log from this browser session on page load
 
   function fmtPct(n) {
     if (n < 0.0001) return n.toExponential(2) + '%';
@@ -274,6 +376,19 @@
       document.getElementById('cmpGainPct').textContent = '+' + gainPct.toFixed(2) + '% more per day';
 
       compareTable.style.display = 'block';
+
+      const myUnitLabel = wiMyUnitEl.options[wiMyUnitEl.selectedIndex].text;
+      const leagueUnitLabel = wiLeagueUnitEl.options[wiLeagueUnitEl.selectedIndex].text;
+      const addUnitLabel = wiAddUnitEl.options[wiAddUnitEl.selectedIndex].text;
+
+      addLogEntry(WHATIF_LOG_KEY, WHATIF_COUNTER_KEY, {
+        coin: coin,
+        powerRange: `${myPower} → ${myPower}+${addPower} ${addUnitLabel}`,
+        leagueRange: `${leaguePower} ${leagueUnitLabel} → +${addPower} ${addUnitLabel}`,
+        perDayRange: `${fmt(before.perDay)} → ${fmt(after.perDay)}${suffix}`,
+        gainDay: '+' + fmt(gainDay) + suffix
+      });
+      renderWhatifLog();
     } catch (err) {
       console.error(err);
       wiErrorMsg.textContent = 'Could not reach the calculator right now. Please try again shortly.';
@@ -296,4 +411,3 @@
     compareTable.style.display = 'none';
     wiErrorMsg.style.display = 'none';
   });
-
