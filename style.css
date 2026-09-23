@@ -303,6 +303,56 @@
   .compare-cell.after { color: var(--cyan); }
   .compare-row.gain .compare-cell { color: var(--mint); font-weight: 700; border-top: 1px solid var(--panel-line); }
 
+  /* ---------- Session log tables ---------- */
+  .log-block {
+    margin-top: 26px;
+    border-top: 1px solid var(--panel-line);
+    padding-top: 18px;
+  }
+  .log-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .log-title {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .btn-small { padding: 6px 12px; font-size: 12px; }
+  .log-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--panel-line);
+    border-radius: 8px;
+  }
+  .log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .log-table th, .log-table td {
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .log-table thead th {
+    background: var(--graphite-deep);
+    color: var(--text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--panel-line);
+  }
+  .log-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+  .log-table tbody td:first-child { color: var(--text-dim); }
+  .log-table tbody td { color: var(--text-bright); border-bottom: 1px solid var(--panel-line); }
+  .log-table tbody tr:last-child td { border-bottom: none; }
+
   /* ---------- Ad slots ---------- */
   .ad-slot {
     border: 1px dashed var(--panel-line);
