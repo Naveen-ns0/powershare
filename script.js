@@ -1,3 +1,4 @@
+  // ⚠️ Replace with your deployed Cloudflare Worker URL after setup.
   const WORKER_URL = "https://powershare-calculator.naveenkumarsingh112211.workers.dev/";
 
   const LOG_CAP = 20;
@@ -238,6 +239,7 @@
       statusText.textContent = 'ready';
       errorMsg.style.display = 'none';
       wiErrorMsg.style.display = 'none';
+      document.getElementById('mpErrorMsg').style.display = 'none';
     });
   });
 
@@ -410,4 +412,157 @@
     wiBlockTimeCustomWrap.style.display = 'none';
     compareTable.style.display = 'none';
     wiErrorMsg.style.display = 'none';
+  });
+
+  // ---------- Miner Power Impact tab ----------
+  const mpCurrentPowerEl = document.getElementById('mpCurrentPower');
+  const mpCurrentUnitEl = document.getElementById('mpCurrentUnit');
+  const mpCurrentBonusEl = document.getElementById('mpCurrentBonus');
+  const mpNewPowerEl = document.getElementById('mpNewPower');
+  const mpNewUnitEl = document.getElementById('mpNewUnit');
+  const mpNewBonusEl = document.getElementById('mpNewBonus');
+  const mpOldPowerEl = document.getElementById('mpOldPower');
+  const mpOldUnitEl = document.getElementById('mpOldUnit');
+  const mpOldBonusEl = document.getElementById('mpOldBonus');
+  const mpRackBonusEl = document.getElementById('mpRackBonus');
+  const mpCalcBtn = document.getElementById('mpCalcBtn');
+  const mpClearBtn = document.getElementById('mpClearBtn');
+  const mpErrorMsg = document.getElementById('mpErrorMsg');
+  const mpLoadingNote = document.getElementById('mpLoadingNote');
+  const mpResults = document.getElementById('mpResults');
+  const minerLogBlock = document.getElementById('minerLogBlock');
+  const minerLogBody = document.getElementById('minerLogBody');
+  const clearMinerLogBtn = document.getElementById('clearMinerLog');
+
+  const MINER_LOG_KEY = 'powershare_miner_log';
+  const MINER_COUNTER_KEY = 'powershare_miner_counter';
+
+  // Auto-scales a raw h/s value into the largest sensible unit (Gh/s .. Yh/s) for display.
+  function formatPower(hs) {
+    const sign = hs < 0 ? '-' : '';
+    const abs = Math.abs(hs);
+    const units = [
+      ['Yh/s', 1e24], ['Zh/s', 1e21], ['Eh/s', 1e18],
+      ['Ph/s', 1e15], ['Th/s', 1e12], ['Gh/s', 1e9]
+    ];
+    if (abs === 0) return '0 Gh/s';
+    for (const [label, mult] of units) {
+      if (abs >= mult) return sign + fmt(abs / mult) + ' ' + label;
+    }
+    return sign + fmt(abs / 1e9) + ' Gh/s';
+  }
+
+  function renderMinerLog() {
+    const entries = loadLog(MINER_LOG_KEY);
+    if (entries.length === 0) {
+      minerLogBlock.style.display = 'none';
+      return;
+    }
+    minerLogBlock.style.display = 'block';
+    minerLogBody.innerHTML = entries.map(e => `
+      <tr>
+        <td>${e.serial}</td>
+        <td>${e.newMiner}</td>
+        <td>${e.replaced}</td>
+        <td>${e.rackBonus}</td>
+        <td>${e.increase}</td>
+      </tr>
+    `).join('');
+  }
+
+  clearMinerLogBtn.addEventListener('click', () => {
+    saveLog(MINER_LOG_KEY, []);
+    renderMinerLog();
+  });
+
+  renderMinerLog(); // restore any log from this browser session on page load
+
+  mpCalcBtn.addEventListener('click', async () => {
+    mpErrorMsg.style.display = 'none';
+    mpResults.style.display = 'none';
+
+    const currentPower = parseFloat(mpCurrentPowerEl.value);
+    const currentBonusPct = parseFloat(mpCurrentBonusEl.value) || 0;
+    const newPower = parseFloat(mpNewPowerEl.value);
+    const newBonusPct = parseFloat(mpNewBonusEl.value) || 0;
+    const oldPower = parseFloat(mpOldPowerEl.value) || 0;
+    const oldBonusPct = parseFloat(mpOldBonusEl.value) || 0;
+    const rackBonusPct = parseFloat(mpRackBonusEl.value) || 0;
+
+    if (!currentPower || currentPower <= 0 || !newPower || newPower <= 0) {
+      mpErrorMsg.textContent = 'Please fill in your current raw power and the new miner\'s power with valid numbers.';
+      mpErrorMsg.style.display = 'block';
+      return;
+    }
+
+    if (WORKER_URL.includes('PASTE-YOUR')) {
+      mpErrorMsg.textContent = 'Calculator backend not connected yet — see setup guide.';
+      mpErrorMsg.style.display = 'block';
+      return;
+    }
+
+    // Normalize every power value to a common base (Gh/s) before sending to the Worker
+    const currentPowerGh = (currentPower * unitMultiplier[mpCurrentUnitEl.value]) / unitMultiplier.gh;
+    const newPowerGh = (newPower * unitMultiplier[mpNewUnitEl.value]) / unitMultiplier.gh;
+    const oldPowerGh = (oldPower * unitMultiplier[mpOldUnitEl.value]) / unitMultiplier.gh;
+
+    mpLoadingNote.style.display = 'block';
+    mpCalcBtn.disabled = true;
+
+    try {
+      const data = await callWorker({
+        calcType: 'minerImpact',
+        currentPower: currentPowerGh,
+        currentBonusPct,
+        newPower: newPowerGh,
+        newBonusPct,
+        oldPower: oldPowerGh,
+        oldBonusPct,
+        rackBonusPct
+      });
+
+      // Worker returns values in Gh/s (same base we sent); convert back to h/s for display formatting
+      const baseIncreaseHs = data.baseIncrease * unitMultiplier.gh;
+      const rackEffectHs = data.rackEffect * unitMultiplier.gh;
+      const totalIncreaseHs = data.totalIncrease * unitMultiplier.gh;
+
+      document.getElementById('mpResBase').textContent = formatPower(baseIncreaseHs);
+      document.getElementById('mpResRack').textContent = formatPower(rackEffectHs);
+      document.getElementById('mpResTotal').textContent = formatPower(totalIncreaseHs);
+
+      mpResults.style.display = 'grid';
+
+      const newMinerUnitLabel = mpNewUnitEl.options[mpNewUnitEl.selectedIndex].text;
+      const oldMinerUnitLabel = mpOldUnitEl.options[mpOldUnitEl.selectedIndex].text;
+      const replacedText = oldPower > 0
+        ? `${mpOldPowerEl.value} ${oldMinerUnitLabel} @ ${oldBonusPct}%`
+        : 'None';
+
+      addLogEntry(MINER_LOG_KEY, MINER_COUNTER_KEY, {
+        newMiner: `${mpNewPowerEl.value} ${newMinerUnitLabel} @ ${newBonusPct}%`,
+        replaced: replacedText,
+        rackBonus: `${rackBonusPct}%`,
+        increase: formatPower(totalIncreaseHs)
+      });
+      renderMinerLog();
+    } catch (err) {
+      console.error(err);
+      mpErrorMsg.textContent = 'Could not reach the calculator right now. Please try again shortly.';
+      mpErrorMsg.style.display = 'block';
+    } finally {
+      mpLoadingNote.style.display = 'none';
+      mpCalcBtn.disabled = false;
+    }
+  });
+
+  mpClearBtn.addEventListener('click', () => {
+    mpCurrentPowerEl.value = '';
+    mpCurrentBonusEl.value = '';
+    mpNewPowerEl.value = '';
+    mpNewBonusEl.value = '0';
+    mpOldPowerEl.value = '0';
+    mpOldBonusEl.value = '0';
+    mpRackBonusEl.value = '0';
+    mpResults.style.display = 'none';
+    mpErrorMsg.style.display = 'none';
   });
