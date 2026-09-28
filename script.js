@@ -1,5 +1,5 @@
   // ⚠️ Replace with your deployed Cloudflare Worker URL after setup.
-  const WORKER_URL = "PASTE-YOUR-CLOUDFLARE-WORKER-URL-HERE";
+  const WORKER_URL = "https://powershare-calculator.naveenkumarsingh112211.workers.dev/";
 
   const LOG_CAP = 20;
 
