@@ -7,18 +7,18 @@
 <meta name="description" content="Free RollerCoin reward calculator — estimate mining payouts per block, hour, day and month from your power and league power. No sign-up, independent fan tool.">
 <link rel="canonical" href="https://naveen-ns0.github.io/powershare-calculator/">
 
+<meta name="google-site-verification" content="I2Nv5lFsmDEwxhFY4duI14UjG2b7LB9jltkYpDiGv80" />
+
 <meta property="og:type" content="website">
 <meta property="og:title" content="PowerShare — Free RollerCoin Reward Calculator">
 <meta property="og:description" content="Estimate your RollerCoin mining reward from your power, league power, and block reward. Free, no sign-up, nothing stored.">
 <meta property="og:url" content="https://naveen-ns0.github.io/powershare-calculator/">
 
-<meta name="google-site-verification" content="I2Nv5lFsmDEwxhFY4duI14UjG2b7LB9jltkYpDiGv80" />
-
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PowerShare — Free RollerCoin Reward Calculator">
 <meta name="twitter:description" content="Estimate your RollerCoin mining reward from your power, league power, and block reward. Free, no sign-up.">
 
-<meta name="keywords" content="rollercoin calculator, rollercoin reward calculator, rollercoin mining calculator, rollercoin payout calculator, rollercoin power calculator, rollercoin league power, rollercoin block reward, rollercoin mining estimator, how to calculate rollercoin reward, rollercoin power needed calculator, what is league power rollercoin, best rollercoin calculator, rollercoin miner power calculator, rollercoin global bonus power, rollercoin rack bonus, rollercoin league threshold, how much power does a rollercoin miner add, rollercoin miner swap calculator">
+<meta name="keywords" content="rollercoin calculator, rollercoin reward calculator, rollercoin mining calculator, rollercoin payout calculator, rollercoin power calculator, rollercoin league power, rollercoin block reward, rollercoin mining estimator, how to calculate rollercoin reward, rollercoin power needed calculator, what is league power rollercoin, best rollercoin calculator">
 
 <script type="application/ld+json">
 {
@@ -79,41 +79,6 @@
       "@type": "Question",
       "name": "Is there a free RollerCoin calculator online?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes — PowerShare Calculator is completely free, works in any browser, and doesn't require creating an account or linking your RollerCoin profile." }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I calculate how much power a new RollerCoin miner will add?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Use the Miner Power Impact tab: enter your current raw power and global bonus %, then the new miner's power and bonus %. If you're replacing an existing miner, add its stats too. The tool returns the exact permanent power increase, accounting for both global bonus and rack bonus separately." }
-    },
-    {
-      "@type": "Question",
-      "name": "What's the difference between Global Bonus Power and Rack Bonus in RollerCoin?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Global Bonus Power is one combined percentage from every bonus miner you have placed, and it multiplies your entire account's permanent power. Rack Bonus only affects miners in one specific rack and adds on top separately — RollerCoin's own blog confirms the two don't multiply together." }
-    },
-    {
-      "@type": "Question",
-      "name": "Will buying a new miner push me into a higher RollerCoin league?",
-      "acceptedAnswer": { "@type": "Answer", "text": "It can, if the power increase crosses your league's threshold. The Miner Power Impact tab shows you the exact increase before you buy, so you can see whether a purchase keeps you under a threshold or pushes you past it." }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I avoid accidentally crossing a RollerCoin league threshold?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Check the exact power increase a miner purchase or swap would add before you buy it, using the Miner Power Impact tab. That lets you get as close to a threshold as you want without tipping over into a league where you'd start at the bottom against much stronger competition." }
-    },
-    {
-      "@type": "Question",
-      "name": "Does temporary power from RollerCoin games count toward my league?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No — league placement is based on permanent power from placed miners only. Temporary power earned through games fluctuates constantly and doesn't affect which league you're in, which is why this calculator never asks for it." }
-    },
-    {
-      "@type": "Question",
-      "name": "Can this calculator handle a miner swap, not just a new purchase?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Miner Power Impact tab has fields for an old miner's power and bonus % (both default to 0 for a fresh purchase). Fill them in for a swap and the tool nets out the old miner's contribution before calculating your increase." }
-    },
-    {
-      "@type": "Question",
-      "name": "Where do I find my permanent power and global bonus % in RollerCoin?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Both are shown on your account's profile/statistics page inside RollerCoin. Only actively placed bonus miners count toward your global bonus % — one sitting unplaced in your inventory contributes nothing." }
     }
   ]
 }
@@ -162,7 +127,6 @@
       <div class="tabs">
         <button class="tab-btn active" data-tab="reward">Reward Calculator</button>
         <button class="tab-btn" data-tab="whatif">What If I Add Power</button>
-        <button class="tab-btn" data-tab="miner">Miner Power Impact</button>
       </div>
 
       <div class="dash-body">
@@ -456,141 +420,6 @@
 
         </div><!-- /tab-whatif -->
 
-        <div class="tab-panel" id="tab-miner">
-
-          <p style="font-size:12.5px; color:var(--text-dim); margin: 0 0 18px;">
-            Figure out exactly how much <strong>permanent</strong> power a miner (or a miner swap) will add — useful if you're trying to get close to a league threshold without crossing it.
-          </p>
-
-          <div class="form-grid">
-            <div class="field">
-              <label for="mpCurrentPower">
-                Your current raw power
-                <span class="info-icon" tabindex="0" data-tip="Your account's permanent mining power, found on your Profile → Statistics page. This does not include temporary power from games.">?</span>
-              </label>
-              <div class="input-combo">
-                <input type="number" id="mpCurrentPower" placeholder="e.g. 9" min="0" step="any">
-                <select id="mpCurrentUnit">
-                  <option value="gh">Gh/s</option>
-                  <option value="th">Th/s</option>
-                  <option value="ph">Ph/s</option>
-                  <option value="eh" selected>Eh/s</option>
-                  <option value="zh">Zh/s</option>
-                  <option value="yh">Yh/s</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="mpCurrentBonus">
-                Your current global bonus %
-                <span class="info-icon" tabindex="0" data-tip="The combined bonus-power % from every bonus miner you currently have placed/active — also on your Profile → Statistics page. Only placed miners count, not ones sitting unplaced in inventory.">?</span>
-              </label>
-              <div class="input-combo">
-                <input type="number" id="mpCurrentBonus" placeholder="e.g. 12.5" min="0" step="any">
-                <span class="unit-suffix">%</span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="mpNewPower">New miner — power</label>
-              <div class="input-combo">
-                <input type="number" id="mpNewPower" placeholder="e.g. 500" min="0" step="any">
-                <select id="mpNewUnit">
-                  <option value="gh">Gh/s</option>
-                  <option value="th" selected>Th/s</option>
-                  <option value="ph">Ph/s</option>
-                  <option value="eh">Eh/s</option>
-                  <option value="zh">Zh/s</option>
-                  <option value="yh">Yh/s</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="mpNewBonus">New miner — bonus %</label>
-              <div class="input-combo">
-                <input type="number" id="mpNewBonus" placeholder="0" min="0" step="any" value="0">
-                <span class="unit-suffix">%</span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="mpOldPower">Replacing a miner? Old miner — power</label>
-              <div class="input-combo">
-                <input type="number" id="mpOldPower" placeholder="0" min="0" step="any" value="0">
-                <select id="mpOldUnit">
-                  <option value="gh">Gh/s</option>
-                  <option value="th" selected>Th/s</option>
-                  <option value="ph">Ph/s</option>
-                  <option value="eh">Eh/s</option>
-                  <option value="zh">Zh/s</option>
-                  <option value="yh">Yh/s</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="mpOldBonus">Old miner — bonus %</label>
-              <div class="input-combo">
-                <input type="number" id="mpOldBonus" placeholder="0" min="0" step="any" value="0">
-                <span class="unit-suffix">%</span>
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="mpRackBonus">
-                Rack bonus %
-                <span class="info-icon" tabindex="0" data-tip="The % bonus of the rack slot both miners sit in (or will sit in). Leave at 0 if the rack has no bonus, or if you're not sure.">?</span>
-              </label>
-              <div class="input-combo">
-                <input type="number" id="mpRackBonus" placeholder="0" min="0" step="any" value="0">
-                <span class="unit-suffix">%</span>
-              </div>
-            </div>
-          </div>
-
-          <p style="font-size:12.5px; color:var(--text-dim); margin: -6px 0 18px;">
-            This shows the permanent power <em>increase</em> only — not a new total — since a total would need visibility into every other miner already racked on your account.
-          </p>
-
-          <div class="actions">
-            <button class="btn-primary" id="mpCalcBtn">Calculate power increase</button>
-            <button class="btn-ghost" id="mpClearBtn">Clear</button>
-          </div>
-
-          <div class="error-msg" id="mpErrorMsg"></div>
-          <div class="loading-note" id="mpLoadingNote">Calculating…</div>
-
-          <div class="results" id="mpResults" style="grid-template-columns: repeat(3, 1fr);">
-            <div class="result-cell"><div class="k">Base power increase</div><div class="v" id="mpResBase">—</div></div>
-            <div class="result-cell"><div class="k">Rack bonus effect</div><div class="v" id="mpResRack">—</div></div>
-            <div class="result-cell"><div class="k">Total power increase</div><div class="v" id="mpResTotal">—</div></div>
-          </div>
-
-          <div class="log-block" id="minerLogBlock" style="display:none;">
-            <div class="log-head">
-              <span class="log-title">This session's calculations</span>
-              <button class="btn-ghost btn-small" id="clearMinerLog">Clear log</button>
-            </div>
-            <div class="log-table-wrap">
-              <table class="log-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>New miner</th>
-                    <th>Replaced</th>
-                    <th>Rack bonus %</th>
-                    <th>Power increase</th>
-                  </tr>
-                </thead>
-                <tbody id="minerLogBody"></tbody>
-              </table>
-            </div>
-          </div>
-
-        </div><!-- /tab-miner -->
-
       </div>
     </div>
   </section>
@@ -634,34 +463,6 @@
       <p class="faq-q">Gh/s, Th/s, Ph/s, Eh/s, Zh/s, Yh/s</p>
       <p class="faq-a">Units of hashing power, each 1,000× the one before it: Giga-, Tera-, Peta-, Exa-, Zetta-, and Yotta-hashes per second. As RollerCoin's total network power grows, larger units become more common in league totals.</p>
     </div>
-    <div class="faq-item">
-      <p class="faq-q">Permanent power</p>
-      <p class="faq-a">The mining power your account holds from placed miners, unaffected by day-to-day activity. This is the figure RollerCoin uses to place you in a league — separate from temporary power earned through games, which fluctuates and doesn't affect league placement.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Global Bonus Power</p>
-      <p class="faq-a">A combined percentage from every bonus-power miner you currently have placed and active. This single percentage multiplies your entire account's permanent raw power — not just the miner that provides it. Owning a bonus miner without placing it contributes nothing.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Rack Bonus</p>
-      <p class="faq-a">A percentage boost that applies only to miners placed in a specific rack, based on that rack's own bonus. Rack Bonus stacks additively on top of Global Bonus Power rather than multiplying with it.</p>
-    </div>
-  </section>
-
-  <div class="ad-slot">ad space</div>
-
-  <section class="section">
-    <h2>How Miner Power Impact works</h2>
-    <p>Buying a new miner — or swapping one out for a better one — always changes your permanent power, but by exactly how much isn't obvious at a glance. That's the gap the <strong>Miner Power Impact</strong> tab closes: enter your current numbers and the miner you're considering, and it tells you the precise power increase before you spend anything.</p>
-
-    <p>This matters most for players sitting near a league threshold. Cross it by even a small margin and you don't just move up — you land at the very bottom of the next league, often facing a much larger, more established pool of miners for the same block reward. Knowing the exact increase in advance lets you get as close to a threshold as you want, without accidentally tipping over it.</p>
-
-    <p>The calculation keeps two separate effects apart, since RollerCoin itself treats them differently: <strong>Global Bonus Power</strong>, a single combined percentage from every bonus miner you have actively placed, which multiplies your entire account's raw power — and <strong>Rack Bonus</strong>, a percentage that only affects miners sitting in one specific rack and stacks on top rather than multiplying in. Mixing these two up is the most common source of a wrong estimate, which is why the tool asks for them as separate fields.</p>
-
-    <p>It also deliberately leaves out one thing: a "new total power" figure. Total power depends on every other miner already racked on your account, which this tool doesn't have visibility into — so instead of guessing, it reports the increase only, which is the number that actually matters for league planning. It also only ever uses permanent power, never temporary power from games, since temporary power doesn't affect league placement.</p>
-
-    <h3 style="font-family: var(--display); font-size: 16px; color: #fff; margin: 22px 0 10px;">Why use it</h3>
-    <p>Compare a miner purchase or upgrade against your current power before buying — see if it's worth it, or if it pushes you further than intended. Plan a miner swap by entering the old miner's stats alongside the new one, so replacement scenarios are covered as easily as a fresh purchase. And get a straight answer to "how much does this actually add" without needing a spreadsheet or manually working through global-bonus and rack-bonus math by hand.</p>
   </section>
 
   <div class="ad-slot">ad space</div>
@@ -712,34 +513,6 @@
     <div class="faq-item">
       <p class="faq-q">Is there a free RollerCoin calculator online?</p>
       <p class="faq-a">Yes — PowerShare Calculator is completely free, works in any browser, and doesn't require creating an account or linking your RollerCoin profile.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">How do I calculate how much power a new RollerCoin miner will add?</p>
-      <p class="faq-a">Use the Miner Power Impact tab: enter your current raw power and global bonus %, then the new miner's power and bonus %. If you're replacing an existing miner, add its stats too. The tool returns the exact permanent power increase, accounting for both global bonus and rack bonus separately.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">What's the difference between Global Bonus Power and Rack Bonus in RollerCoin?</p>
-      <p class="faq-a">Global Bonus Power is one combined percentage from every bonus miner you have placed, and it multiplies your entire account's permanent power. Rack Bonus only affects miners in one specific rack and adds on top separately — RollerCoin's own blog confirms the two don't multiply together.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Will buying a new miner push me into a higher RollerCoin league?</p>
-      <p class="faq-a">It can, if the power increase crosses your league's threshold. The Miner Power Impact tab shows you the exact increase before you buy, so you can see whether a purchase keeps you under a threshold or pushes you past it.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">How do I avoid accidentally crossing a RollerCoin league threshold?</p>
-      <p class="faq-a">Check the exact power increase a miner purchase or swap would add before you buy it, using the Miner Power Impact tab. That lets you get as close to a threshold as you want without tipping over into a league where you'd start at the bottom against much stronger competition.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Does temporary power from RollerCoin games count toward my league?</p>
-      <p class="faq-a">No — league placement is based on permanent power from placed miners only. Temporary power earned through games fluctuates constantly and doesn't affect which league you're in, which is why this calculator never asks for it.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Can this calculator handle a miner swap, not just a new purchase?</p>
-      <p class="faq-a">Yes. The Miner Power Impact tab has fields for an old miner's power and bonus % (both default to 0 for a fresh purchase). Fill them in for a swap and the tool nets out the old miner's contribution before calculating your increase.</p>
-    </div>
-    <div class="faq-item">
-      <p class="faq-q">Where do I find my permanent power and global bonus % in RollerCoin?</p>
-      <p class="faq-a">Both are shown on your account's profile/statistics page inside RollerCoin. Only actively placed bonus miners count toward your global bonus % — one sitting unplaced in your inventory contributes nothing.</p>
     </div>
   </section>
 
