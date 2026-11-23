@@ -490,3 +490,40 @@
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
   }
+
+  /* Calculator request section */
+  textarea {
+    background: var(--graphite-deep);
+    border: 1px solid var(--panel-line);
+    border-radius: 8px;
+    color: var(--text-bright);
+    font-family: var(--mono);
+    font-size: 14px;
+    padding: 10px 12px;
+    width: 100%;
+    line-height: 1.4;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+  textarea:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+  .request-section .form-grid { margin-top: 18px; }
+  .success-msg {
+    color: var(--cyan);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    margin-top: 10px;
+    display: none;
+  }
+
+  /* Sister site cross-link */
+  .sister-link {
+    display: inline-block;
+    padding: 9px 16px;
+    border: 1px solid var(--cyan-deep);
+    border-radius: 8px;
+    color: var(--cyan);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .sister-link:hover, .sister-link:focus { background: var(--cyan); color: var(--graphite-deep); outline: none; }
+  footer.site-footer a { color: var(--cyan); }
